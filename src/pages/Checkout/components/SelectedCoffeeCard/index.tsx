@@ -4,15 +4,14 @@ import { CartContext, CartItem } from '../../../../contexts/CoffeeContext'
 import { formatValue } from '../../../../utils/formatValue'
 import {
   BoxButtons,
-  BoxIconAndQuantity,
   BoxTexAndButtons,
   ButtonQuantity,
   ButtonRemove,
   ContainerQuantity,
+  PriceAndTextCoffee,
   PriceCoffee,
   Quantity,
   SelectedCoffeeContainer,
-  SeparatorCoffeeSelected,
   TextCoffee,
 } from './styles'
 
@@ -40,32 +39,29 @@ export function SelectedCoffeeCard({ coffee }: SelectedCoffeeProps) {
 
   const priceItems = coffee.price * coffee.quantity
   return (
-    <>
-      <SelectedCoffeeContainer>
-        <BoxIconAndQuantity>
-          <img src={coffee.image} alt="" />
-          <BoxTexAndButtons>
-            <TextCoffee>{coffee.title}</TextCoffee>
-            <BoxButtons>
-              <ContainerQuantity>
-                <ButtonQuantity onClick={handleDecreseItem}>
-                  <Minus size={14} color="#8047F8" />
-                </ButtonQuantity>
-                <Quantity>{coffee.quantity}</Quantity>
-                <ButtonQuantity onClick={handleIncreseItem}>
-                  <Plus size={14} color="#8047F8" />
-                </ButtonQuantity>
-              </ContainerQuantity>
-              <ButtonRemove onClick={handleRemoveItem}>
-                <Trash size={16} color="#8047F8" />
-                Remover
-              </ButtonRemove>
-            </BoxButtons>
-          </BoxTexAndButtons>
-        </BoxIconAndQuantity>
-        <PriceCoffee>R$ {formatValue(priceItems)}</PriceCoffee>
-      </SelectedCoffeeContainer>
-      <SeparatorCoffeeSelected />
-    </>
+    <SelectedCoffeeContainer>
+      <img src={coffee.image} alt="" />
+      <BoxTexAndButtons>
+        <PriceAndTextCoffee>
+          <TextCoffee>{coffee.title}</TextCoffee>
+          <PriceCoffee>R$ {formatValue(priceItems)}</PriceCoffee>
+        </PriceAndTextCoffee>
+        <BoxButtons>
+          <ContainerQuantity>
+            <ButtonQuantity onClick={handleDecreseItem}>
+              <Minus size={14} color="#8047F8" />
+            </ButtonQuantity>
+            <Quantity>{coffee.quantity}</Quantity>
+            <ButtonQuantity onClick={handleIncreseItem}>
+              <Plus size={14} color="#8047F8" />
+            </ButtonQuantity>
+          </ContainerQuantity>
+          <ButtonRemove onClick={handleRemoveItem}>
+            <Trash size={16} color="#8047F8" />
+            Remover
+          </ButtonRemove>
+        </BoxButtons>
+      </BoxTexAndButtons>
+    </SelectedCoffeeContainer>
   )
 }

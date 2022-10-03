@@ -35,8 +35,8 @@ export const Cart = styled(BaseActionNav)`
   &::after {
     content: attr(data-badge);
     position: absolute;
-    top: -8px;
-    right: -8.35px;
+    top: -7px;
+    right: -7px;
     background: ${(props) => props.theme['yellow-dark']};
     color: ${(props) => props.theme.white};
     font-size: 0.75rem;

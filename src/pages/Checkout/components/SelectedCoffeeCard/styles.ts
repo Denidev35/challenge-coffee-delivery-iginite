@@ -3,33 +3,33 @@ import styled from 'styled-components'
 export const SelectedCoffeeContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0.5rem 0.25rem;
-  gap: 3.6875rem;
+  padding: 0.5rem 0.25rem 2rem;
+  gap: 1.25rem;
+  /* padding-bottom: 1.5rem; */
+  border-bottom: 1px solid ${(props) => props.theme['base-button']};
+  margin-bottom: 1.5rem;
 
-  width: 23rem;
-  height: 5rem;
+  width: 100%;
 
   img {
     width: 4rem;
     height: 4rem;
   }
 `
-export const SeparatorCoffeeSelected = styled.div`
-  width: 100%;
-  border-bottom: 1px solid ${(props) => props.theme['base-button']};
-  margin: 1.5rem 0;
-`
 
 export const BoxIconAndQuantity = styled.div`
   display: flex;
   align-items: center;
   gap: 1.25rem;
+  width: 100%;
 `
 
 export const BoxTexAndButtons = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  justify-content: flex-start;
+  width: 100%;
 `
 
 export const TextCoffee = styled.span`
@@ -51,7 +51,6 @@ export const ContainerQuantity = styled.div`
   padding: 0.5rem;
   gap: 0.25rem;
 
-  /* width: 2.25rem; */
   height: 2rem;
   background: ${(props) => props.theme['base-button']};
   border-radius: 6px;
@@ -105,4 +104,11 @@ export const PriceCoffee = styled.span`
   line-height: 1.3;
   color: ${(props) => props.theme['base-text']};
   white-space: nowrap;
+`
+export const PriceAndTextCoffee = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
 `
