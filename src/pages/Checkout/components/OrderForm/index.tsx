@@ -5,9 +5,11 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { FocusEventHandler, useContext, useState } from 'react'
+import { FocusEventHandler, useContext } from 'react'
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
 
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { CartContext } from '../../../../contexts/CoffeeContext'
 import { Order, OrderContext } from '../../../../contexts/OrderContext'
@@ -25,24 +27,29 @@ import {
   TitleBoxTexts,
 } from './styles'
 
-interface OrderFormData {
-  cep: string
-  street: string
-  number: number
-  complement: string
-  district: string
-  city: string
-  uf: string
-}
+const orderFormSchema = z.object({
+  cep: z.string(),
+  street: z.string(),
+  number: z.number(),
+  complement: z.string(),
+  district: z.string(),
+  city: z.string(),
+  uf: z.string(),
+  paymentMethod: z.string(),
+})
+
+type OrderFormData = z.infer<typeof orderFormSchema>
 
 export function OrderForm() {
-  const [paymentMethod, setPaymentMethod] = useState('')
   const { addToOrder } = useContext(OrderContext)
   const { coffeeItems, removeAllCartItem } = useContext(CartContext)
-  const { register, handleSubmit, setValue, setFocus } = useForm()
+  const { register, handleSubmit, setValue, setFocus, control } =
+    useForm<OrderFormData>({
+      resolver: zodResolver(orderFormSchema),
+    })
   const navigate = useNavigate()
 
-  function checkCEP(event: FocusEventHandler<HTMLInputElement>) {
+  const checkCEP: FocusEventHandler<HTMLInputElement> = (event) => {
     const cep = event.target.value.replace(/\D/g, '')
     fetch(`https://viacep.com.br/ws/${cep}/json/`)
       .then((res) => res.json())
@@ -61,7 +68,16 @@ export function OrderForm() {
   }
 
   function handleCreateNewOrder(data: OrderFormData) {
-    const { cep, street, number, complement, district, city, uf } = data
+    const {
+      cep,
+      street,
+      number,
+      complement,
+      district,
+      city,
+      uf,
+      paymentMethod,
+    } = data
     const newOrder: Order = {
       address: {
         cep,
@@ -82,10 +98,6 @@ export function OrderForm() {
     }
     removeAllCartItem()
     navigate('/success')
-  }
-
-  function handleSelectButton(method: string) {
-    setPaymentMethod(method)
   }
 
   return (
@@ -161,24 +173,28 @@ export function OrderForm() {
             </TextBoxTexts>
           </BoxTexts>
         </BoxIconTexts>
-        <PaymentMethod>
-          <PaymentMethodButton
-            onClick={() => handleSelectButton('Cartão de Crédito')}
-          >
-            <CreditCard size={16} color="#8047F8" />
-            Cartão de Crédito
-          </PaymentMethodButton>
-          <PaymentMethodButton
-            onClick={() => handleSelectButton('Cartão de Débito')}
-          >
-            <Bank size={16} color="#8047F8" />
-            Cartão de Débito
-          </PaymentMethodButton>
-          <PaymentMethodButton onClick={() => handleSelectButton('Dinheiro')}>
-            <Money size={16} color="#8047F8" />
-            Dinheiro
-          </PaymentMethodButton>
-        </PaymentMethod>
+        <Controller
+          control={control}
+          name="paymentMethod"
+          render={({ field }) => {
+            return (
+              <PaymentMethod onValueChange={field.onChange} value={field.value}>
+                <PaymentMethodButton value="Cartão de Crédito">
+                  <CreditCard size={16} color="#8047F8" />
+                  Cartão de Crédito
+                </PaymentMethodButton>
+                <PaymentMethodButton value="Cartão de Débito">
+                  <Bank size={16} color="#8047F8" />
+                  Cartão de Débito
+                </PaymentMethodButton>
+                <PaymentMethodButton value="Dinheiro">
+                  <Money size={16} color="#8047F8" />
+                  Dinheiro
+                </PaymentMethodButton>
+              </PaymentMethod>
+            )
+          }}
+        />
       </OrderAndPaymentContainer>
     </>
   )

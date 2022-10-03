@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
+import * as RadioGroup from '@radix-ui/react-radio-group'
 
 export const OrderFormContainer = styled.form`
   display: flex;
@@ -83,13 +84,13 @@ export const TextBoxTexts = styled.span`
   color: ${(props) => props.theme['base-text']};
 `
 
-export const PaymentMethod = styled.div`
+export const PaymentMethod = styled(RadioGroup.Root)`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
 `
-export const PaymentMethodButton = styled.button`
+export const PaymentMethodButton = styled(RadioGroup.Item)`
   display: flex;
   align-items: center;
   padding: 1rem;
@@ -106,12 +107,12 @@ export const PaymentMethodButton = styled.button`
   width: 11.166875rem;
   height: 3.1875rem;
 
-  &:focus {
+  &[data-state='checked'] {
     box-shadow: 0 0 0 1px ${(props) => props.theme.purple};
     background: ${(props) => props.theme['purple-light']};
   }
 
-  &:hover {
+  &[data-state='unchecked']:hover {
     background: ${(props) => props.theme['base-hover']};
     color: ${(props) => props.theme['base-subtitle']};
   }
